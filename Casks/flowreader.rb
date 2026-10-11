@@ -17,8 +17,9 @@ cask "flowreader" do
   # One universal DMG, arm64 and x86_64 in the same bundle, so there is no
   # `arch` stanza and no per-architecture checksum. Downloaded from the public
   # release repository: the source repository is private.
-  url "https://github.com/flowreader-app/flowreader/releases/download/v#{version}/FlowReader-macos-#{version}-universal.dmg",
-      verified: "github.com/flowreader-app/flowreader/"
+  #
+  # No `verified:`: Homebrew 7 deprecates it and verifies the URL by default.
+  url "https://github.com/flowreader-app/flowreader/releases/download/v#{version}/FlowReader-macos-#{version}-universal.dmg"
   name "FlowReader"
   desc "Distraction-free reading app with pacing aids"
   homepage "https://flowreader.io/"
@@ -31,8 +32,12 @@ cask "flowreader" do
     strategy :github_latest
   end
 
-  # `src-tauri/tauri.conf.json` sets `minimumSystemVersion: "10.15"`.
-  depends_on macos: ">= :catalina"
+  # No version floor. The app's is 10.15 (`minimumSystemVersion` in
+  # `src-tauri/tauri.conf.json`), below every macOS Homebrew still runs on, and
+  # Homebrew 7 refuses `:catalina` outright ("Calling `depends_on macos:
+  # :catalina` is disabled"), which broke `brew install` for 1.0.0. `brew style`
+  # still wants the cask marked macOS-only.
+  depends_on :macos
 
   app "FlowReader.app"
 
