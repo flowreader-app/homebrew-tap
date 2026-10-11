@@ -15,11 +15,16 @@ cask "flowreader" do
   sha256 "c164ed9e7f0000a5cd144c278221e4e6133752506a9481355b7058a7bed3816f"
 
   # One universal DMG, arm64 and x86_64 in the same bundle, so there is no
-  # `arch` stanza and no per-architecture checksum. Downloaded from the public
-  # release repository: the source repository is private.
+  # `arch` stanza and no per-architecture checksum. Fetched through the
+  # download counter (infra/download-worker, `/r/<tag>/<asset>`), which counts
+  # the install with its version and answers 302 to
+  # https://github.com/flowreader-app/flowreader/releases/download/v<version>/FlowReader-macos-<version>-universal.dmg
+  # in the public release repository: the source repository is private. The
+  # sha256 above is still checked against the file GitHub serves.
   #
-  # No `verified:`: Homebrew 7 deprecates it and verifies the URL by default.
-  url "https://github.com/flowreader-app/flowreader/releases/download/v#{version}/FlowReader-macos-#{version}-universal.dmg"
+  # No `verified:`: Homebrew 7 deprecates it and verifies the URL by default;
+  # get.flowreader.io is under the homepage's domain.
+  url "https://get.flowreader.io/r/v#{version}/macos-dmg?src=homebrew"
   name "FlowReader"
   desc "Distraction-free reading app with pacing aids"
   homepage "https://flowreader.io/"
