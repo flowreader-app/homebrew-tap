@@ -4,15 +4,15 @@
 # renders it with `scripts/render-package-manifest.mjs` from the release's
 # verified `artifact-manifest.json` and commits the result to the tap
 # flowreader-app/homebrew-tap as `Casks/flowreader.rb`
-# (`brew install --cask flowreader-app/tap/flowreader`). `1.0.2` and `990fa6209d0fd0e69210bd7a8e09742fc1da3baf15c98918e32800f8d035025d` are substituted
+# (`brew install --cask flowreader-app/tap/flowreader`). `1.0.3` and `068c251cdae3025a5a7c3b0e7d486750d00ee28c276013af6017385b04b93cbc` are substituted
 # from that manifest, which is the same record the delivery gate checks the DMG
 # bytes against — so the checksum a user's `brew install` verifies and the
 # checksum the release published cannot drift apart.
 #
 # The placeholders are plain Ruby strings, so `ruby -c` parses this file as-is.
 cask "flowreader" do
-  version "1.0.2"
-  sha256 "990fa6209d0fd0e69210bd7a8e09742fc1da3baf15c98918e32800f8d035025d"
+  version "1.0.3"
+  sha256 "068c251cdae3025a5a7c3b0e7d486750d00ee28c276013af6017385b04b93cbc"
 
   # One universal DMG, arm64 and x86_64 in the same bundle, so there is no
   # `arch` stanza and no per-architecture checksum. Fetched through the
@@ -37,6 +37,13 @@ cask "flowreader" do
     strategy :github_latest
   end
 
+  # The app updates itself in place: the desktop updater replaces
+  # /Applications/FlowReader.app with the signed bundle from latest.json
+  # (docs/release/desktop-updater.md). `auto_updates true` is Homebrew's
+  # convention for such apps: `brew upgrade` leaves the cask alone unless run
+  # with `--greedy`, so brew and the app never race to replace the same bundle,
+  # and `brew outdated` does not nag about a version the app already took.
+  auto_updates true
   # No version floor. The app's is 10.15 (`minimumSystemVersion` in
   # `src-tauri/tauri.conf.json`), below every macOS Homebrew still runs on, and
   # Homebrew 7 refuses `:catalina` outright ("Calling `depends_on macos:
