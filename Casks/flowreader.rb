@@ -4,15 +4,15 @@
 # renders it with `scripts/render-package-manifest.mjs` from the release's
 # verified `artifact-manifest.json` and commits the result to the tap
 # flowreader-app/homebrew-tap as `Casks/flowreader.rb`
-# (`brew install --cask flowreader-app/tap/flowreader`). `1.2.5` and `edb7e7b0c435c5edea7425a9090054409ae4f6b1d0105c5ad0e394068e6b301b` are substituted
+# (`brew install --cask flowreader-app/tap/flowreader`). `1.2.7` and `f3a4b818b88b2741a923daec93f974a9447ef5554afdff5895a7b0856f104398` are substituted
 # from that manifest, which is the same record the delivery gate checks the DMG
 # bytes against — so the checksum a user's `brew install` verifies and the
 # checksum the release published cannot drift apart.
 #
 # The placeholders are plain Ruby strings, so `ruby -c` parses this file as-is.
 cask "flowreader" do
-  version "1.2.5"
-  sha256 "edb7e7b0c435c5edea7425a9090054409ae4f6b1d0105c5ad0e394068e6b301b"
+  version "1.2.7"
+  sha256 "f3a4b818b88b2741a923daec93f974a9447ef5554afdff5895a7b0856f104398"
 
   # One universal DMG, arm64 and x86_64 in the same bundle, so there is no
   # `arch` stanza and no per-architecture checksum. Fetched through the
